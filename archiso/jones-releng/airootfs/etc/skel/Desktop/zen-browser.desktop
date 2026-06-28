@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Zen Browser
+Comment=Avaa Zen Browser
+Exec=zen-browser
+Icon=zen-browser
+Terminal=false
+Categories=Network;WebBrowser;

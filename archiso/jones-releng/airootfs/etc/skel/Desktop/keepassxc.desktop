@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=KeePassXC
+Comment=Avaa KeePassXC
+Exec=keepassxc
+Icon=keepassxc
+Terminal=false
+Categories=Utility;Security;

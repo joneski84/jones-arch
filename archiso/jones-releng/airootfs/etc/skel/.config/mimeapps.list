@@ -1,0 +1,11 @@
+[Default Applications]
+text/html=zen-browser.desktop
+x-scheme-handler/http=zen-browser.desktop
+x-scheme-handler/https=zen-browser.desktop
+x-scheme-handler/about=zen-browser.desktop
+x-scheme-handler/unknown=zen-browser.desktop
+
+[Added Associations]
+text/html=zen-browser.desktop;firefox.desktop;
+x-scheme-handler/http=zen-browser.desktop;firefox.desktop;
+x-scheme-handler/https=zen-browser.desktop;firefox.desktop;

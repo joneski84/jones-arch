@@ -1,0 +1,45 @@
+add_newline = true
+command_timeout = 1000
+
+format = '''
+[╭─](bold purple)$username$hostname$directory$git_branch$git_status$cmd_duration
+[╰─](bold purple)$character
+'''
+
+[username]
+show_always = true
+style_user = "bold #c084fc"
+style_root = "bold #ff5555"
+format = "[$user]($style)"
+
+[hostname]
+ssh_only = false
+style = "bold #8be9fd"
+format = "[@$hostname]($style) "
+
+[directory]
+style = "bold #bd93f9"
+read_only = " 󰌾"
+read_only_style = "bold #ffb86c"
+truncation_length = 4
+truncate_to_repo = false
+format = "[ $path]($style)[$read_only]($read_only_style) "
+
+[git_branch]
+symbol = " "
+style = "bold #ff79c6"
+format = "[$symbol$branch]($style) "
+
+[git_status]
+style = "bold #ffb86c"
+format = "[$all_status$ahead_behind]($style) "
+
+[cmd_duration]
+min_time = 2000
+style = "dimmed #6272a4"
+format = "[ $duration]($style) "
+
+[character]
+success_symbol = "[❯](bold #c084fc)"
+error_symbol = "[❯](bold #ff5555)"
+vicmd_symbol = "[❮](bold #8be9fd)"

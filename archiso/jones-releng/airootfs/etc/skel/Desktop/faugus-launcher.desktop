@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Faugus Launcher
+Comment=Avaa Faugus Launcher
+Exec=faugus-launcher
+Icon=faugus-launcher
+Terminal=false
+Categories=Game;

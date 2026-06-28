@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+
+echo "=== Jones Gaming Check ==="
+echo
+
+check_cmd() {
+    local cmd="$1"
+    if command -v "$cmd" >/dev/null 2>&1; then
+        printf "%-18s OK       %s\n" "$cmd" "$(command -v "$cmd")"
+    else
+        printf "%-18s PUUTTUU\n" "$cmd"
+    fi
+}
+
+check_cmd zen-browser
+check_cmd firefox
+check_cmd steam
+check_cmd faugus-launcher
+check_cmd mangohud
+check_cmd gamemoded
+check_cmd wine
+check_cmd winetricks
+check_cmd umu-run
+check_cmd gimp
+check_cmd keepassxc
+check_cmd vulkaninfo
+
+echo
+echo "Käyttäjän ryhmät:"
+id
+
+echo
+echo "Oletusselain:"
+xdg-settings get default-web-browser 2>/dev/null || true
+
+echo
+echo "MIME oletukset:"
+grep -E 'text/html|x-scheme-handler/http|x-scheme-handler/https' ~/.config/mimeapps.list /etc/xdg/mimeapps.list 2>/dev/null || true
+
+echo
+echo "Vulkan summary:"
+if command -v vulkaninfo >/dev/null 2>&1; then
+    vulkaninfo --summary 2>/dev/null | sed -n '1,60p'
+else
+    echo "vulkaninfo puuttuu"
+fi
+
+echo
+echo "GameMode testi:"
+if command -v gamemoded >/dev/null 2>&1; then
+    gamemoded -t || true
+else
+    echo "gamemoded puuttuu"
+fi

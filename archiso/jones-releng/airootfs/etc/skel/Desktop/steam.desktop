@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Steam
+Comment=Avaa Steam
+Exec=steam
+Icon=steam
+Terminal=false
+Categories=Game;
