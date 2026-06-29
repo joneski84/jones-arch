@@ -27,3 +27,5 @@ repo/x86_64/*.old
 pkg/
 src/
 aur-build/
+local-assets/
+assets/

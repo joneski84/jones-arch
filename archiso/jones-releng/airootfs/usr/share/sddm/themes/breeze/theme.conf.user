@@ -1,3 +1,5 @@
 [General]
-background=/usr/share/wallpapers/JonesArch/contents/images/jones-neon-city.jpg
+background=/usr/share/wallpapers/JonesArch/contents/images/jones-neon-city-login.jpg
 type=image
+color=#05000f
+fontSize=12
