@@ -102,23 +102,6 @@ jobs:
 
           ls -lah
 
-      - name: Add Pages index
-        shell: bash
-        run: |
-          cat > "$GITHUB_WORKSPACE/public/index.html" <<'HTML'
-<!doctype html>
-<html lang="fi">
-<head>
-  <meta charset="utf-8">
-  <title>Jones Arch pacman repo</title>
-</head>
-<body>
-  <h1>Jones Arch pacman repo</h1>
-  <p>Pacman repo löytyy kansiosta <code>/x86_64</code>.</p>
-</body>
-</html>
-HTML
-
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
 
