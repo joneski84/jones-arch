@@ -27,4 +27,9 @@ file_permissions=(
   ["/etc/skel/Desktop/faugus-launcher.desktop"]="0:0:755"
   ["/etc/skel/Desktop/steam.desktop"]="0:0:755"
   ["/etc/skel/Desktop/keepassxc.desktop"]="0:0:755"
+  ["/usr/local/bin/jones-welcome"]="0:0:755"
+  ["/usr/local/bin/jones-gaming-setup"]="0:0:755"
+  ["/usr/local/bin/jones-first-login"]="0:0:755"
+  ["/etc/skel/Desktop/jones-welcome.desktop"]="0:0:755"
+  ["/etc/skel/.config/autostart/jones-first-login.desktop"]="0:0:755"
 )

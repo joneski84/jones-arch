@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+manual="${1:-}"
+
+mkdir -p "$HOME/.config/jones"
+
+if [ "$manual" != "--manual" ] && [ -f "$HOME/.config/jones/welcome-shown" ]; then
+    exit 0
+fi
+
+touch "$HOME/.config/jones/welcome-shown"
+
+title="Tervetuloa Jones Archiin"
+
+body="Jones Arch
+
+Tumma, violetti ja pelivalmis Arch-pohjainen live-ympäristö.
+
+Mukana:
+  • Zen Browser oletusselaimeksi
+  • Steam, Faugus, Wine, UMU, MangoHud ja GameMode
+  • ProtonUp-Qt GE-Protonin hallintaan
+  • KeePassXC salasanoille
+  • Suomen kieli ja näppäimistö
+
+Valitse mitä tehdään seuraavaksi."
+
+if ! command -v kdialog >/dev/null 2>&1; then
+    echo "$body"
+    exit 0
+fi
+
+choice="$(kdialog --title "$title" --menu "$body" \
+    gaming "Avaa Jones Gaming Setup / ProtonUp-Qt" \
+    zen "Avaa Zen Browser" \
+    faugus "Avaa Faugus Launcher" \
+    keepass "Avaa KeePassXC" \
+    close "Sulje" 2>/dev/null || true)"
+
+case "$choice" in
+    gaming)
+        jones-gaming-setup &
+        ;;
+    zen)
+        if command -v zen-browser >/dev/null 2>&1; then zen-browser >/dev/null 2>&1 & fi
+        ;;
+    faugus)
+        if command -v faugus-launcher >/dev/null 2>&1; then faugus-launcher >/dev/null 2>&1 & fi
+        ;;
+    keepass)
+        if command -v keepassxc >/dev/null 2>&1; then keepassxc >/dev/null 2>&1 & fi
+        ;;
+    *)
+        :
+        ;;
+esac

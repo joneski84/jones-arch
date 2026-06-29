@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Jones Welcome
+Comment=Jones Arch tervetuloa ja pika-asetukset
+Exec=jones-welcome --manual
+Icon=jones-arch
+Terminal=false
+Categories=System;

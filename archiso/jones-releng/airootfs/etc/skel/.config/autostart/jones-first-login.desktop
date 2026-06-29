@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Jones First Login
+Comment=Asettaa Jones Arch -teeman ja avaa tervetuloa-ikkunan
+Exec=jones-first-login
+Icon=jones-arch
+Terminal=false
+X-KDE-autostart-after=panel

@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+mkdir -p "$HOME/.config/jones"
+
+if [ -f "$HOME/.config/jones/first-login-done" ]; then
+    exit 0
+fi
+
+touch "$HOME/.config/jones/first-login-done"
+
+sleep 4
+
+if command -v lookandfeeltool >/dev/null 2>&1; then
+    lookandfeeltool -a org.kde.breezedark.desktop >/dev/null 2>&1 || true
+fi
+
+if command -v plasma-apply-wallpaperimage >/dev/null 2>&1; then
+    plasma-apply-wallpaperimage /usr/share/wallpapers/JonesArch/contents/images/3840x2160.svg >/dev/null 2>&1 || true
+fi
+
+jones-welcome >/dev/null 2>&1 &

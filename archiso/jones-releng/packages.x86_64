@@ -177,3 +177,6 @@ winetricks
 # Jones local repo packages
 zen-browser-bin
 faugus-launcher
+kdialog
+protonup-qt-bin
+protontricks
