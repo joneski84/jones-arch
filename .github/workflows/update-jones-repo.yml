@@ -57,6 +57,7 @@ jobs:
           packages=(
             zen-browser-bin
             faugus-launcher
+            protonup-qt-bin
           )
 
           for pkg in "${packages[@]}"; do
