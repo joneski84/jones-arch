@@ -20,3 +20,17 @@ if command -v plasma-apply-wallpaperimage >/dev/null 2>&1; then
 fi
 
 jones-welcome >/dev/null 2>&1 &
+
+# Jones: ei näytetä vanhaa Plasma/Breeze splash -logoanimaatiota
+if command -v kwriteconfig6 >/dev/null 2>&1; then
+    kwriteconfig6 --file ksplashrc --group KSplash --key Theme None >/dev/null 2>&1 || true
+elif command -v kwriteconfig5 >/dev/null 2>&1; then
+    kwriteconfig5 --file ksplashrc --group KSplash --key Theme None >/dev/null 2>&1 || true
+else
+    mkdir -p "$HOME/.config"
+    cat > "$HOME/.config/ksplashrc" <<'EOF_KSPLASH'
+[KSplash]
+Theme=None
+EOF_KSPLASH
+fi
+
