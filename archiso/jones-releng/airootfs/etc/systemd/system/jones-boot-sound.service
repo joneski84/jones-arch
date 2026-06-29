@@ -1,0 +1,16 @@
+[Unit]
+Description=Jones Arch early boot sound
+DefaultDependencies=no
+After=local-fs.target systemd-udev-settle.service plymouth-start.service
+Before=display-manager.service sddm.service
+Wants=systemd-udev-settle.service
+ConditionPathExists=/usr/share/sounds/jones/jones-boot.wav
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/jones-boot-sound
+TimeoutStartSec=8
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

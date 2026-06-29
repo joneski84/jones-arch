@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+set -u
+
+SOUND="/usr/share/sounds/jones/jones-boot.wav"
+
+[ -f "$SOUND" ] || exit 0
+command -v aplay >/dev/null 2>&1 || exit 0
+
+# Odotetaan hetki, että ALSA ehtii nähdä äänikortin.
+for _ in $(seq 1 40); do
+    if aplay -l >/dev/null 2>&1; then
+        break
+    fi
+    sleep 0.1
+done
+
+# Jos äänikorttia ei löydy, ei jumiteta bootia.
+if ! aplay -l >/dev/null 2>&1; then
+    exit 0
+fi
+
+# Soitetaan hiljaa ja epäonnistuminen sallitaan.
+aplay -q "$SOUND" >/dev/null 2>&1 || true
+
+exit 0
