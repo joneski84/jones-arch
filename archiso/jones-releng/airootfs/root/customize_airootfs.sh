@@ -54,3 +54,38 @@ Server = https://joneski84.github.io/jones-arch/x86_64
 EOF
 fi
 
+# Jones Plymouth oletusteema
+mkdir -p /etc/plymouth
+cat > /etc/plymouth/plymouthd.conf <<'EOF_PLYMOUTH'
+[Daemon]
+Theme=jones-skull
+ShowDelay=0
+EOF_PLYMOUTH
+
+if [ -f /usr/share/plymouth/themes/jones-skull/jones-skull.plymouth ]; then
+    ln -sf /usr/share/plymouth/themes/jones-skull/jones-skull.plymouth /usr/share/plymouth/themes/default.plymouth
+fi
+
+if command -v plymouth-set-default-theme >/dev/null 2>&1; then
+    plymouth-set-default-theme jones-skull >/dev/null 2>&1 || true
+fi
+
+# Jones: poistetaan KDE/Plasma splash ennen ensimmäistä kirjautumista
+mkdir -p /etc/skel/.config /etc/xdg
+
+cat > /etc/skel/.config/ksplashrc <<'EOF_KSPLASH'
+[KSplash]
+Theme=None
+EOF_KSPLASH
+
+cat > /etc/xdg/ksplashrc <<'EOF_KSPLASH_GLOBAL'
+[KSplash]
+Theme=None
+EOF_KSPLASH_GLOBAL
+
+if id live >/dev/null 2>&1; then
+    mkdir -p /home/live/.config
+    cp /etc/skel/.config/ksplashrc /home/live/.config/ksplashrc
+    chown live:live /home/live/.config/ksplashrc
+fi
+
