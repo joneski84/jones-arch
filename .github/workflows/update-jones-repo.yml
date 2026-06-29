@@ -1,0 +1,141 @@
+name: Update Jones pacman repo
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+  schedule:
+    - cron: "17 4 * * 1"
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: jones-pages
+  cancel-in-progress: false
+
+jobs:
+  build-repo:
+    runs-on: ubuntu-latest
+    container:
+      image: archlinux:latest
+
+    steps:
+      - name: Bootstrap Arch container
+        run: |
+          pacman -Syu --noconfirm
+          pacman -S --noconfirm --needed git ca-certificates
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install build tools
+        run: |
+          pacman -S --noconfirm --needed base-devel sudo pacman-contrib
+
+          useradd -m builder
+          echo "builder ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/builder
+          chmod 0440 /etc/sudoers.d/builder
+
+          echo "MAKEFLAGS=\"-j$(nproc)\"" >> /etc/makepkg.conf
+
+      - name: Build AUR packages
+        shell: bash
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+
+          REPO_DIR="$GITHUB_WORKSPACE/public/x86_64"
+          BUILD_DIR="/tmp/jones-aur-build"
+
+          mkdir -p "$REPO_DIR" "$BUILD_DIR"
+          chown -R builder:builder "$REPO_DIR" "$BUILD_DIR"
+
+          packages=(
+            zen-browser-bin
+            faugus-launcher
+          )
+
+          for pkg in "${packages[@]}"; do
+            echo "::group::Build $pkg"
+
+            rm -rf "$BUILD_DIR/$pkg"
+            sudo -u builder git clone "https://aur.archlinux.org/${pkg}.git" "$BUILD_DIR/$pkg"
+
+            pushd "$BUILD_DIR/$pkg"
+
+            sudo -u builder makepkg --syncdeps --noconfirm --noprogressbar
+
+            built_packages=( ./*.pkg.tar.zst )
+            if [ "${#built_packages[@]}" -eq 0 ]; then
+              echo "No package produced for $pkg"
+              exit 1
+            fi
+
+            cp ./*.pkg.tar.zst "$REPO_DIR/"
+
+            pacman -U --noconfirm ./*.pkg.tar.zst
+
+            popd
+            echo "::endgroup::"
+          done
+
+      - name: Create pacman repo database
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          cd "$GITHUB_WORKSPACE/public/x86_64"
+
+          repo-add jones.db.tar.gz ./*.pkg.tar.zst
+
+          for link in jones.db jones.files; do
+            if [ -L "$link" ]; then
+              target="$(readlink "$link")"
+              rm "$link"
+              cp "$target" "$link"
+            fi
+          done
+
+          ls -lah
+
+      - name: Add Pages index
+        shell: bash
+        run: |
+          cat > "$GITHUB_WORKSPACE/public/index.html" <<'HTML'
+<!doctype html>
+<html lang="fi">
+<head>
+  <meta charset="utf-8">
+  <title>Jones Arch pacman repo</title>
+</head>
+<body>
+  <h1>Jones Arch pacman repo</h1>
+  <p>Pacman repo löytyy kansiosta <code>/x86_64</code>.</p>
+</body>
+</html>
+HTML
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload pacman repo as Pages artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: public
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    runs-on: ubuntu-latest
+    needs: build-repo
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
