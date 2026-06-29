@@ -16,7 +16,7 @@ if command -v lookandfeeltool >/dev/null 2>&1; then
 fi
 
 if command -v plasma-apply-wallpaperimage >/dev/null 2>&1; then
-    plasma-apply-wallpaperimage /usr/share/wallpapers/JonesArch/contents/images/3840x2160.svg >/dev/null 2>&1 || true
+    plasma-apply-wallpaperimage /usr/share/wallpapers/JonesArch/contents/images/jones-neon-city.jpg >/dev/null 2>&1 || true
 fi
 
 jones-welcome >/dev/null 2>&1 &

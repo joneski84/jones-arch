@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+SRC="/usr/share/refind/themes/neon"
+REFIND_DIR=""
+
+for d in \
+    /boot/efi/EFI/refind \
+    /boot/EFI/refind \
+    /efi/EFI/refind \
+    /boot/refind
+do
+    if [ -d "$d" ]; then
+        REFIND_DIR="$d"
+        break
+    fi
+done
+
+if [ -z "$REFIND_DIR" ]; then
+    echo "rEFInd-hakemistoa ei löytynyt."
+    echo "Asenna ensin rEFInd tai tarkista EFI-mount."
+    exit 1
+fi
+
+sudo mkdir -p "$REFIND_DIR/themes/neon"
+sudo cp -a "$SRC/." "$REFIND_DIR/themes/neon/"
+
+if [ -f "$REFIND_DIR/refind.conf" ]; then
+    if ! grep -q '^include themes/neon/theme.conf$' "$REFIND_DIR/refind.conf"; then
+        echo '' | sudo tee -a "$REFIND_DIR/refind.conf" >/dev/null
+        echo 'include themes/neon/theme.conf' | sudo tee -a "$REFIND_DIR/refind.conf" >/dev/null
+    fi
+else
+    echo "VAROITUS: $REFIND_DIR/refind.conf ei löytynyt."
+    echo "Lisää käsin:"
+    echo "include themes/neon/theme.conf"
+fi
+
+echo "rEFInd neon-teema asennettu hakemistoon: $REFIND_DIR/themes/neon"
+echo "Taustana käytetään: themes/neon/img/jones-background.jpg"

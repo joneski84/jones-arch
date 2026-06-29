@@ -32,4 +32,5 @@ file_permissions=(
   ["/usr/local/bin/jones-first-login"]="0:0:755"
   ["/etc/skel/Desktop/jones-welcome.desktop"]="0:0:755"
   ["/etc/skel/.config/autostart/jones-first-login.desktop"]="0:0:755"
+  ["/usr/local/bin/jones-install-refind-theme"]="0:0:755"
 )
