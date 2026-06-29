@@ -43,3 +43,14 @@ cp -rT /etc/skel /home/live || true
 chown -R live:live /home/live
 
 echo "[Jones] customize_airootfs.sh done"
+
+# Jones pacman repo live-järjestelmään
+if ! grep -q '^\[jones\]' /etc/pacman.conf; then
+    cat >> /etc/pacman.conf <<'EOF'
+
+[jones]
+SigLevel = Optional TrustAll
+Server = https://joneski84.github.io/jones-arch/x86_64
+EOF
+fi
+
